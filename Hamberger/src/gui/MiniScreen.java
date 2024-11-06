@@ -14,6 +14,7 @@ public class MiniScreen {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(900, 600);
 
+        
         // MiniScreen용 배경 패널 생성 및 추가
         MiniScreenBackgroundPanel backgroundPanel = new MiniScreenBackgroundPanel();
         frame.add(backgroundPanel);
