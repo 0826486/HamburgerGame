@@ -45,7 +45,7 @@ class MiniScreenBackgroundPanel extends JPanel {
         g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
         
         // 캐릭터 이미지를 원하는 위치에 표시 (예: x=100, y=400)
-        g.drawImage(characterImage, 100, 100, 200, 200, this); // 위치 및 크기 설정
+        g.drawImage(characterImage, 300, 300, 200, 200, this); // 위치 및 크기 설정
     }
 }
 
