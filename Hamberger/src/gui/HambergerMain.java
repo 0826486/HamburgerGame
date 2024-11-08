@@ -38,8 +38,12 @@ public class HambergerMain {
             // 현재 창 닫기
             frame.dispose();
             
-            // MiniScreen 열기
-            MiniScreen.main(null);
+            // Kirby 클래스 열기
+            JFrame kirbyFrame = new JFrame();
+            kirbyFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            kirbyFrame.setSize(900, 600);
+            kirbyFrame.add(new Kirby()); // Kirby 패널 추가
+            kirbyFrame.setVisible(true);
         });
 
         // 창을 보이게 설정
