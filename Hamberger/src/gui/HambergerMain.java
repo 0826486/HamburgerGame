@@ -23,7 +23,7 @@ public class HambergerMain {
 
         // 버튼 생성
         JButton button = new JButton(buttonIcon);
-        button.setBounds(320, 290, buttonIcon.getIconWidth(), buttonIcon.getIconHeight()); // 버튼의 위치와 크기를 이미지 크기로 설정
+        button.setBounds(390, 430, buttonIcon.getIconWidth(), buttonIcon.getIconHeight()); // 버튼의 위치와 크기를 이미지 크기로 설정
         
         // 버튼의 배경과 테두리 제거
         button.setContentAreaFilled(false); // 버튼의 내용 영역 배경을 투명하게 설정
@@ -54,8 +54,8 @@ class BackgroundPanel extends JPanel {
 
     public BackgroundPanel() {
         // 이미지 로드
-        backgroundImage = new ImageIcon("image/background.jpg").getImage();
-        additionalImage = new ImageIcon("image/hamberger.png").getImage(); // 추가 이미지 경로 설정
+        backgroundImage = new ImageIcon("image/main.jpg").getImage();
+        additionalImage = new ImageIcon("image/kirbyham.png").getImage(); // 추가 이미지 경로 설정
     }
 
     @Override
@@ -65,6 +65,6 @@ class BackgroundPanel extends JPanel {
         g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
         
         // 추가 이미지
-        g.drawImage(additionalImage, 320, 100, 260, 260, this); // 추가 이미지 위치와 크기
+        g.drawImage(additionalImage, 640, 17, 150, 150, this); // 추가 이미지 위치와 크기
     }
 }
