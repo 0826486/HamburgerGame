@@ -20,16 +20,20 @@ public class Kirby extends JPanel {
         characterImage = new ImageIcon("image/char.png").getImage(); // 캐릭터 이미지
         kirbychar = new ImageIcon("image/kirbymukbang.png").getImage();
         
-        // 캐릭터 크기 조정 타이머 설정
-        Timer kirby = new Timer(100, e -> {
-            kirbyW += 10;
-            kirbyH += 10;
-            if (kirbyW >= 200 || kirbyH >= 200) {  // 원하는 크기인 200에서 멈춤
-                ((Timer) e.getSource()).stop(); // 타이머 중지
-            }
-            repaint(); // 크기 조정 후 다시 그리기
-        });
-        kirby.start();
+        // 5초 지연 후에 타이머 시작
+        new Timer(2000, e -> {
+            // 타이머 생성 및 커비 이미지 크기 증가 설정
+            Timer kirbyTimer = new Timer(100, event -> {
+                kirbyW += 10;
+                kirbyH += 10;
+                if (kirbyW >= 200 || kirbyH >= 200) {  // 원하는 크기인 200에서 멈춤
+                    ((Timer) event.getSource()).stop(); // 타이머 중지
+                }
+                repaint(); // 크기 조정 후 다시 그리기
+            });
+            kirbyTimer.start();
+            ((Timer) e.getSource()).stop(); // 5초 지연 타이머 중지
+        }).start();
     }
 
     @Override
