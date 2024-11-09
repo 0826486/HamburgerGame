@@ -11,7 +11,9 @@ public class Kirby extends JPanel {
     private Image backgroundImage;
     private Image characterImage;
     private Image kirbychar;
-    private Image newImage; // 새 이미지
+    private Image ChefKirby; // 새 이미지
+    private Image star; // 별 이미지
+    private Image star2; // 별 이미지
     private int kirbyW = 80;
     private int kirbyH = 80;
     private boolean isKirbyFullyGrown = false; // 커비가 다 커졌는지 여부
@@ -22,7 +24,9 @@ public class Kirby extends JPanel {
         backgroundImage = new ImageIcon("image/startbackground.jpg").getImage(); // 배경 이미지
         characterImage = new ImageIcon("image/char.png").getImage(); // 캐릭터 이미지
         kirbychar = new ImageIcon("image/kirbymukbang.png").getImage();
-        newImage = new ImageIcon("image/kirbychef.png").getImage(); // 새로운 이미지 로드
+        ChefKirby = new ImageIcon("image/kirbychef.png").getImage(); // 새로운 이미지 로드
+        star = new ImageIcon("image/star.png").getImage(); // 별 이미지 로드
+        star2 = new ImageIcon("image/star.png").getImage(); // 별 이미지 로드
 
         // 2초 지연 후에 타이머 시작
         new Timer(2000, e -> {
@@ -30,10 +34,10 @@ public class Kirby extends JPanel {
             Timer kirbyTimer = new Timer(100, event -> {
                 kirbyW += 10;
                 kirbyH += 10;
-                if (kirbyW >= 200 || kirbyH >= 200) {  // 원하는 크기인 200에서 멈춤
+                if (kirbyW >= 200 || kirbyH >= 200) { // 원하는 크기인 200에서 멈춤
                     ((Timer) event.getSource()).stop(); // 타이머 중지
                     isKirbyFullyGrown = true; // 커비가 다 커졌음을 표시
-                    
+
                     // 2초 후 새 이미지 표시 타이머
                     new Timer(2000, delayEvent -> {
                         isNewImageDisplayed = true;
@@ -54,8 +58,10 @@ public class Kirby extends JPanel {
         g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
 
         if (isNewImageDisplayed) {
-            // 2초 후 새 이미지를 표시
-            g.drawImage(newImage, 300, 180, 170, 170, this);
+            // 2초 후 새 이미지를 표시 (ChefKirby와 star 이미지를 함께 표시)
+            g.drawImage(ChefKirby, 300, 180, 170, 170, this); // ChefKirby 위치와 크기
+            g.drawImage(star, 444, 150, 100, 100, this); // ChefKirby 옆에 별 이미지 표시
+            g.drawImage(star2, 260, 270, 100, 100, this);	// ChefKirby 옆에 별2 이미지 표시
         } else if (isKirbyFullyGrown) {
             // 커비가 다 커졌을 때는 기존 캐릭터와 커비 이미지를 유지
             g.drawImage(characterImage, 300, 180, 200, 200, this);
