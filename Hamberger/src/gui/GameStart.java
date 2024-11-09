@@ -1,10 +1,9 @@
 package gui;
 
-public class MiniHamberger {
+public class GameStart {
 
 	public static void main(String[] args) {
 		
-
 	}
 
 }
