@@ -42,6 +42,20 @@ public class Kirby extends JPanel {
                     new Timer(2000, delayEvent -> {
                         isNewImageDisplayed = true;
                         repaint(); // 새 이미지를 그리기 위해 다시 그리기
+
+                        // 2초 후 GameStart 화면으로 넘어가기
+                        new Timer(2000, goToGameStart -> {
+                            // GameStart 창을 새로 띄우기
+                            JFrame gameStartFrame = new JFrame("Game Start");
+                            gameStartFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                            gameStartFrame.setSize(900, 600);
+                            gameStartFrame.add(new GameStart()); // GameStart 클래스를 패널로 추가
+                            gameStartFrame.setVisible(true);
+                            
+                            // 현재 창 닫기
+                            JFrame topFrame = (JFrame) getTopLevelAncestor();
+                            topFrame.dispose();  // Kirby 창 닫기
+                        }).start();
                     }).start();
                 }
                 repaint(); // 크기 조정 후 다시 그리기
