@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 public class GameStart extends JPanel implements KeyListener {
     private Image backgroundImage;
     private Image chefKirbyImage; // 메인 캐릭터 이미지
+    private Image[] hamImages = new Image[8]; // 햄버거 재료 이미지 배열
     private int chefKirbyX = 300; // 원하는 X 좌표로 설정
     private int chefKirbyY = 300; // 원하는 Y 좌표로 설정 (고정)
 
@@ -18,6 +19,11 @@ public class GameStart extends JPanel implements KeyListener {
         // 배경 이미지와 메인 캐릭터 이미지 로드
         backgroundImage = new ImageIcon("image/startbackground.jpg").getImage();
         chefKirbyImage = new ImageIcon("image/kirbychef.png").getImage();
+
+        // 햄버거 재료 이미지 로드
+        for (int i = 0; i < 8; i++) {
+            hamImages[i] = new ImageIcon("image/ham" + (i + 1) + ".png").getImage();
+        }
 
         // KeyListener 추가
         this.setFocusable(true);  // 패널이 키 이벤트를 받을 수 있도록 설정
@@ -32,6 +38,11 @@ public class GameStart extends JPanel implements KeyListener {
 
         // ChefKirby 이미지를 원하는 위치에 그리기 (Y는 고정)
         g.drawImage(chefKirbyImage, chefKirbyX, chefKirbyY, 175, 170, this);
+
+        // 햄버거 재료 이미지들을 화면에 표시 (예시)
+        for (int i = 0; i < hamImages.length; i++) {
+            g.drawImage(hamImages[i], 50 * i, 0, 50, 50, this); // 원하는 위치와 크기로 조정 가능
+        }
     }
 
     @Override
