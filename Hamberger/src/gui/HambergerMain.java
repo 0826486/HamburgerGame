@@ -38,7 +38,7 @@ public class HambergerMain {
             // 현재 창 닫기
             frame.dispose();
             
-            // Kirby 클래스 열기
+            // Kirby 클래스를 새 창에 띄우기
             JFrame kirbyFrame = new JFrame();
             kirbyFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             kirbyFrame.setSize(900, 600);
