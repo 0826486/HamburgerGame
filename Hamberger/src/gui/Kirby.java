@@ -28,41 +28,40 @@ public class Kirby extends JPanel {
         star = new ImageIcon("image/star.png").getImage(); // 별 이미지 로드
         star2 = new ImageIcon("image/star.png").getImage(); // 별 이미지 로드
 
-        // 2초 지연 후에 타이머 시작
-        new Timer(2000, e -> {
-            // 타이머 생성 및 커비 이미지 크기 증가 설정
-            Timer kirbyTimer = new Timer(100, event -> {
-                kirbyW += 10;
-                kirbyH += 10;
-                if (kirbyW >= 200 || kirbyH >= 200) { // 원하는 크기인 200에서 멈춤
-                    ((Timer) event.getSource()).stop(); // 타이머 중지
-                    isKirbyFullyGrown = true; // 커비가 다 커졌음을 표시
+        // 타이머 생성 및 커비 이미지 크기 증가 설정
+        Timer kirbyTimer = new Timer(100, event -> {
+            kirbyW += 10;
+            kirbyH += 10;
+            if (kirbyW >= 200 || kirbyH >= 200) { // 원하는 크기인 200에서 멈춤
+                ((Timer) event.getSource()).stop(); // 타이머 중지
+                isKirbyFullyGrown = true; // 커비가 다 커졌음을 표시
 
-                    // 2초 후 새 이미지 표시 타이머
-                    new Timer(2000, delayEvent -> {
-                        isNewImageDisplayed = true;
-                        repaint(); // 새 이미지를 그리기 위해 다시 그리기
+                // 3초 후 캐릭터가 바뀌고 GameStart 화면으로 전환
+                Timer delayTimer = new Timer(3000, delayEvent -> { // 지연 시간을 3000밀리초(3초)로 설정
+                    isNewImageDisplayed = true; // 새 이미지를 표시
+                    repaint(); // 새 이미지를 그리기 위해 다시 그리기
 
-                        // 2초 후 GameStart 화면으로 넘어가기
-                        new Timer(2000, goToGameStart -> {
-                            // GameStart 창을 새로 띄우기
-                            JFrame gameStartFrame = new JFrame("Game Start");
-                            gameStartFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                            gameStartFrame.setSize(900, 600);
-                            gameStartFrame.add(new GameStart()); // GameStart 클래스를 패널로 추가
-                            gameStartFrame.setVisible(true);
-                            
-                            // 현재 창 닫기
-                            JFrame topFrame = (JFrame) getTopLevelAncestor();
-                            topFrame.dispose();  // Kirby 창 닫기
-                        }).start();
-                    }).start();
-                }
-                repaint(); // 크기 조정 후 다시 그리기
-            });
-            kirbyTimer.start();
-            ((Timer) e.getSource()).stop(); // 2초 지연 타이머 중지
-        }).start();
+                    // GameStart 화면 전환 1초 후 실행되도록 타이머 설정
+                    Timer transitionTimer = new Timer(1000, transitionEvent -> {
+                        JFrame gameStartFrame = new JFrame("Game Start");
+                        gameStartFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                        gameStartFrame.setSize(900, 600);
+                        gameStartFrame.add(new GameStart()); // GameStart 클래스를 패널로 추가
+                        gameStartFrame.setVisible(true);
+
+                        // 현재 창 닫기
+                        JFrame topFrame = (JFrame) getTopLevelAncestor();
+                        topFrame.dispose();  // Kirby 창 닫기
+                    });
+                    transitionTimer.setRepeats(false); // 한 번만 실행되도록 설정
+                    transitionTimer.start(); // 타이머 시작
+                });
+                delayTimer.setRepeats(false); // 한 번만 실행되도록 설정
+                delayTimer.start(); // 타이머 시작
+            }
+            repaint(); // 크기 조정 후 다시 그리기
+        });
+        kirbyTimer.start();
     }
 
     @Override
@@ -72,10 +71,10 @@ public class Kirby extends JPanel {
         g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
 
         if (isNewImageDisplayed) {
-            // 2초 후 새 이미지를 표시 (ChefKirby와 star 이미지를 함께 표시)
+            // 텀 후 새 이미지를 표시 (ChefKirby와 star 이미지를 함께 표시)
             g.drawImage(ChefKirby, 300, 180, 170, 170, this); // ChefKirby 위치와 크기
             g.drawImage(star, 444, 150, 100, 100, this); // ChefKirby 옆에 별 이미지 표시
-            g.drawImage(star2, 260, 270, 100, 100, this);	// ChefKirby 옆에 별2 이미지 표시
+            g.drawImage(star2, 260, 270, 100, 100, this); // ChefKirby 옆에 별2 이미지 표시
         } else if (isKirbyFullyGrown) {
             // 커비가 다 커졌을 때는 기존 캐릭터와 커비 이미지를 유지
             g.drawImage(characterImage, 300, 180, 200, 200, this);

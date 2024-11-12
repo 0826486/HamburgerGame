@@ -9,11 +9,13 @@ import java.util.Random;
 public class RandomHamburger {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
+            // eximg 창을 먼저 띄웁니다
             eximg exampleImage = new eximg();
             exampleImage.setVisible(true);
 
+            // 타이머를 설정하여 일정 시간이 지난 후 게임을 시작하도록 설정
             Timer timer = new Timer(2000, e -> {
-                startGame();
+                startGame();  // 게임을 시작
             });
             timer.setRepeats(false);
             timer.start();
@@ -21,6 +23,7 @@ public class RandomHamburger {
     }
 
     private static void startGame() {
+        // GameStart 화면을 새로운 JFrame으로 띄움
         JFrame gameFrame = new JFrame("Game Start");
         GameStart gameStartPanel = new GameStart();
         gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -31,30 +34,34 @@ public class RandomHamburger {
 }
 
 class eximg extends JFrame {
-    private Image[] burgerImages;
-    private Random random;
+    private Image selectedBurgerImage;
 
     public eximg() {
-        setTitle("똑같은 버거를 만들어보세요!");
+        setTitle("랜덤 버거!");
         setSize(300, 200);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        burgerImages = new Image[] {
+        Image[] burgerImages = {
             new ImageIcon("image/chesseburger.png").getImage(),
             new ImageIcon("image/hamberger.png").getImage(),
             new ImageIcon("image/souce.png").getImage(),
             new ImageIcon("image/chickenburger.png").getImage()
         };
 
-        random = new Random();
-        setLocation(1000, 200);
+        Random random = new Random();
+        selectedBurgerImage = burgerImages[random.nextInt(burgerImages.length)];
+
+        setLocation(1000, 200); // 위치를 설정하여 화면에 띄우기
     }
 
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        int index = random.nextInt(burgerImages.length);
-        g.drawImage(burgerImages[index], 0, 0, getWidth(), getHeight(), this);
+        g.drawImage(selectedBurgerImage, 0, 0, getWidth(), getHeight(), this);
+    }
+
+    public Image getSelectedBurgerImage() {
+        return selectedBurgerImage;
     }
 }
 
@@ -76,7 +83,6 @@ class GameStart extends JPanel implements KeyListener {
         backgroundImage = new ImageIcon("image/startbackground.jpg").getImage();
         chefKirbyImage = new ImageIcon("image/kirbychef.png").getImage();
 
-        // 미니창 초기화 및 추가
         miniStackPanel = new MiniStackPanel();
         JFrame miniFrame = new JFrame("Mini Stack");
         miniFrame.setSize(200, 400);
@@ -86,7 +92,7 @@ class GameStart extends JPanel implements KeyListener {
 
         for (int i = 0; i < 8; i++) {
             hamImages[i] = new ImageIcon("image/hamImg" + (i + 1) + ".png").getImage();
-            hamSpeed[i] = 4 + random.nextInt(4);
+            hamSpeed[i] = 2 + random.nextInt(2);  // 속도를 줄여서 내려오는 속도 느리게 설정
 
             int x;
             boolean overlap;
@@ -121,16 +127,15 @@ class GameStart extends JPanel implements KeyListener {
         for (int i = 0; i < hamImages.length; i++) {
             hamY[i] += hamSpeed[i];
 
-            // 커비 캐릭터와 충돌 감지 (범위 조정)
             if (hamY[i] + 20 >= chefKirbyY && hamX[i] + 20 >= chefKirbyX && hamX[i] <= chefKirbyX + 155) {
-                miniStackPanel.addIngredient(hamImages[i]); // 미니 창에 재료 추가
-                hamY[i] = -50; // 재료를 다시 위로 초기화
-                hamSpeed[i] = 4 + random.nextInt(4); // 새로운 속도 설정
+                miniStackPanel.addIngredient(hamImages[i]);
+                hamY[i] = -50;
+                hamSpeed[i] = 2 + random.nextInt(2);  // 재료가 떨어지는 속도를 계속 줄여줍니다
             }
 
             if (hamY[i] > getHeight()) {
                 hamY[i] = -50;
-                hamSpeed[i] = 4 + random.nextInt(4);
+                hamSpeed[i] = 2 + random.nextInt(2);  // 재료가 떨어지는 속도를 계속 줄여줍니다
 
                 int x;
                 boolean overlap;
@@ -178,7 +183,6 @@ class GameStart extends JPanel implements KeyListener {
     public void keyTyped(KeyEvent e) {}
 }
 
-// 미니창에 재료를 쌓아 표시하는 클래스
 class MiniStackPanel extends JPanel {
     private ArrayList<Image> ingredients;
 
@@ -195,10 +199,10 @@ class MiniStackPanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        int y = getHeight() - 50; // 아래부터 쌓이도록 위치 조정
+        int y = getHeight() - 50;
         for (Image ingredient : ingredients) {
             g.drawImage(ingredient, 50, y, 100, 50, this);
-            y -= 50; // 각 재료의 높이만큼 위로 쌓음
+            y -= 50;
         }
     }
 }
