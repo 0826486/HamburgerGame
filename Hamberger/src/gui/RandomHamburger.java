@@ -15,7 +15,6 @@ public class RandomHamburger {
 
             // 타이머를 설정하여 일정 시간이 지난 후 게임을 시작하도록 설정
             Timer timer = new Timer(2000, e -> {
-                exampleImage.setVisible(false); // eximg 창 숨기기
                 startGame();  // 게임을 시작
             });
             timer.setRepeats(false);
@@ -70,8 +69,8 @@ class GameStart extends JPanel implements KeyListener {
     private Image backgroundImage;
     private Image GhostKirImage;
     private Image[] hamImages = new Image[8];
-    private int GhostKirX = 400;
-    private int GhostKirY = 400;
+    private int GhostKirX = 300;
+    private int GhostKirY = 300;
 
     private int[] hamX = new int[8];
     private int[] hamY = new int[8];
@@ -79,7 +78,8 @@ class GameStart extends JPanel implements KeyListener {
     private Random random = new Random();
 
     private MiniStackPanel miniStackPanel;
-    private boolean gameOver = false; // 게임 종료 여부
+    private Timer gameTimer;
+    private boolean isGameOver = false;  // 게임 종료 여부 체크
 
     public GameStart() {
         backgroundImage = new ImageIcon("image/startbackground.jpg").getImage();
@@ -87,7 +87,7 @@ class GameStart extends JPanel implements KeyListener {
 
         miniStackPanel = new MiniStackPanel();
         JFrame miniFrame = new JFrame("Mini Stack");
-        miniFrame.setSize(200, 400);
+        miniFrame.setSize(200, 500);
         miniFrame.add(miniStackPanel);
         miniFrame.setLocation(1200, 200);
         miniFrame.setVisible(true);
@@ -115,32 +115,40 @@ class GameStart extends JPanel implements KeyListener {
         this.setFocusable(true);
         this.addKeyListener(this);
 
-        Timer timer = new Timer(40, new ActionListener() {
+        // 타이머로 게임 상태를 업데이트
+        gameTimer = new Timer(40, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (!gameOver) {
+                if (!isGameOver) {
                     updateHamPosition();
                     repaint();
                 }
             }
         });
-        timer.start();
+        gameTimer.start();
     }
 
     private void updateHamPosition() {
         for (int i = 0; i < hamImages.length; i++) {
             hamY[i] += hamSpeed[i];
 
-            // 버거와 GhostKir 충돌 체크
             if (hamY[i] + 20 >= GhostKirY && hamX[i] + 20 >= GhostKirX && hamX[i] <= GhostKirX + 155) {
                 miniStackPanel.addIngredient(hamImages[i]);
+
+                // 윗빵이 올라갔을 때 게임을 멈추도록 처리
+                if (hamImages[i] == new ImageIcon("image/hamImg1.png").getImage()) {
+                    isGameOver = true;  // 게임 종료
+                    gameTimer.stop();  // 타이머 멈추기
+                    JOptionPane.showMessageDialog(this, "게임 종료! 윗빵이 올라갔습니다.");
+                }
+
                 hamY[i] = -50;
                 hamSpeed[i] = 2 + random.nextInt(2);  // 재료가 떨어지는 속도를 계속 줄여줍니다
             }
 
             if (hamY[i] > getHeight()) {
                 hamY[i] = -50;
-                hamSpeed[i] = 2 + random.nextInt(2);
+                hamSpeed[i] = 2 + random.nextInt(2);  // 재료가 떨어지는 속도를 계속 줄여줍니다
 
                 int x;
                 boolean overlap;
@@ -168,21 +176,15 @@ class GameStart extends JPanel implements KeyListener {
         for (int i = 0; i < hamImages.length; i++) {
             g.drawImage(hamImages[i], hamX[i], hamY[i], 50, 50, this);
         }
-
-        if (gameOver) {
-            g.setColor(Color.RED);
-            g.setFont(new Font("Arial", Font.BOLD, 30));
-            g.drawString("Game Over!", getWidth() / 2 - 100, getHeight() / 2);
-        }
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
         int keyCode = e.getKeyCode();
         if (keyCode == KeyEvent.VK_LEFT && GhostKirX > 0) {
-            GhostKirX -= 10;
+        	GhostKirX -= 10;
         } else if (keyCode == KeyEvent.VK_RIGHT && GhostKirX < getWidth() - 175) {
-            GhostKirX += 10;
+        	GhostKirX += 10;
         }
         repaint();
     }
