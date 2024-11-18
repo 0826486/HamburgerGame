@@ -7,7 +7,7 @@ import javax.swing.JPanel;
 import java.awt.Image;
 import java.awt.Graphics;
 
-public class HambergerMain {
+public class HamburgerMain {
     public static void main(String[] args) {
         // JFrame 생성
         JFrame frame = new JFrame();
