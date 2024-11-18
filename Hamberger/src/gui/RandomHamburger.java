@@ -14,9 +14,7 @@ public class RandomHamburger {
             exampleImage.setVisible(true);
 
             // 타이머를 설정하여 일정 시간이 지난 후 게임을 시작하도록 설정
-            Timer timer = new Timer(2000, e -> {
-                startGame();  // 게임을 시작
-            });
+            Timer timer = new Timer(2000, e -> startGame()); // 게임을 시작
             timer.setRepeats(false);
             timer.start();
         });
@@ -68,6 +66,7 @@ class eximg extends JFrame {
 class GameStart extends JPanel implements KeyListener {
     private Image backgroundImage;
     private Image GhostKirImage;
+    private Image gameOverImage; // gameover.png 이미지
     private Image[] hamImages = new Image[8];
     private int GhostKirX = 300;
     private int GhostKirY = 300;
@@ -79,11 +78,12 @@ class GameStart extends JPanel implements KeyListener {
 
     private MiniStackPanel miniStackPanel;
     private Timer gameTimer;
-    private boolean isGameOver = false;  // 게임 종료 여부 체크
+    private boolean isGameOver = false; // 게임 종료 여부 체크
 
     public GameStart() {
         backgroundImage = new ImageIcon("image/startbackground.jpg").getImage();
         GhostKirImage = new ImageIcon("image/GhostKir.png").getImage();
+        gameOverImage = new ImageIcon("image/gameover.png").getImage(); // gameover.png 로드
 
         miniStackPanel = new MiniStackPanel();
         JFrame miniFrame = new JFrame("Mini Stack");
@@ -94,7 +94,7 @@ class GameStart extends JPanel implements KeyListener {
 
         for (int i = 0; i < 8; i++) {
             hamImages[i] = new ImageIcon("image/hamImg" + (i + 1) + ".png").getImage();
-            hamSpeed[i] = 2 + random.nextInt(2);  // 속도를 줄여서 내려오는 속도 느리게 설정
+            hamSpeed[i] = 2 + random.nextInt(2); // 속도를 줄여서 내려오는 속도 느리게 설정
 
             int x;
             boolean overlap;
@@ -116,13 +116,10 @@ class GameStart extends JPanel implements KeyListener {
         this.addKeyListener(this);
 
         // 타이머로 게임 상태를 업데이트
-        gameTimer = new Timer(40, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (!isGameOver) {
-                    updateHamPosition();
-                    repaint();
-                }
+        gameTimer = new Timer(40, e -> {
+            if (!isGameOver) {
+                updateHamPosition();
+                repaint();
             }
         });
         gameTimer.start();
@@ -135,20 +132,20 @@ class GameStart extends JPanel implements KeyListener {
             if (hamY[i] + 20 >= GhostKirY && hamX[i] + 20 >= GhostKirX && hamX[i] <= GhostKirX + 155) {
                 miniStackPanel.addIngredient(hamImages[i]);
 
-                // 윗빵이 올라갔을 때 게임을 멈추도록 처리
+                // 윗빵이 올라갔을 때 gameover.png를 표시
                 if (hamImages[i] == new ImageIcon("image/hamImg1.png").getImage()) {
-                    isGameOver = true;  // 게임 종료
-                    gameTimer.stop();  // 타이머 멈추기
-                    JOptionPane.showMessageDialog(this, "게임 종료! 윗빵이 올라갔습니다.");
+                    isGameOver = true; // 게임 종료
+                    repaint();
+                    return;
                 }
 
                 hamY[i] = -50;
-                hamSpeed[i] = 2 + random.nextInt(2);  // 재료가 떨어지는 속도를 계속 줄여줍니다
+                hamSpeed[i] = 2 + random.nextInt(2); // 재료가 떨어지는 속도를 계속 줄여줍니다
             }
 
             if (hamY[i] > getHeight()) {
                 hamY[i] = -50;
-                hamSpeed[i] = 2 + random.nextInt(2);  // 재료가 떨어지는 속도를 계속 줄여줍니다
+                hamSpeed[i] = 2 + random.nextInt(2); // 재료가 떨어지는 속도를 계속 줄여줍니다
 
                 int x;
                 boolean overlap;
@@ -173,8 +170,13 @@ class GameStart extends JPanel implements KeyListener {
         g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
         g.drawImage(GhostKirImage, GhostKirX, GhostKirY, 175, 170, this);
 
-        for (int i = 0; i < hamImages.length; i++) {
-            g.drawImage(hamImages[i], hamX[i], hamY[i], 50, 50, this);
+        if (isGameOver) {
+            // Y 좌표를 기존보다 50만큼 위로 올림
+            g.drawImage(gameOverImage, getWidth() / 2 - 150, getHeight() / 2 - 150, 300, 200, this);
+        } else {
+            for (int i = 0; i < hamImages.length; i++) {
+                g.drawImage(hamImages[i], hamX[i], hamY[i], 50, 50, this);
+            }
         }
     }
 
@@ -182,9 +184,9 @@ class GameStart extends JPanel implements KeyListener {
     public void keyPressed(KeyEvent e) {
         int keyCode = e.getKeyCode();
         if (keyCode == KeyEvent.VK_LEFT && GhostKirX > 0) {
-        	GhostKirX -= 10;
+            GhostKirX -= 10;
         } else if (keyCode == KeyEvent.VK_RIGHT && GhostKirX < getWidth() - 175) {
-        	GhostKirX += 10;
+            GhostKirX += 10;
         }
         repaint();
     }
