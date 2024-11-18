@@ -11,7 +11,7 @@ public class Kirby extends JPanel {
     private Image backgroundImage;
     private Image characterImage;
     private Image kirbychar;
-    private Image ChefKirby; // 새 이미지
+    private Image GhostKir; // 새 이미지
     private Image star; // 별 이미지
     private Image star2; // 별 이미지
     private int kirbyW = 80;
@@ -24,7 +24,7 @@ public class Kirby extends JPanel {
         backgroundImage = new ImageIcon("image/startbackground.jpg").getImage(); // 배경 이미지
         characterImage = new ImageIcon("image/char.png").getImage(); // 캐릭터 이미지
         kirbychar = new ImageIcon("image/kirbymukbang.png").getImage();
-        ChefKirby = new ImageIcon("image/kirbychef.png").getImage(); // 새로운 이미지 로드
+        GhostKir = new ImageIcon("image/GhostKir.png").getImage(); // 새로운 이미지 로드
         star = new ImageIcon("image/star.png").getImage(); // 별 이미지 로드
         star2 = new ImageIcon("image/star.png").getImage(); // 별 이미지 로드
 
@@ -72,9 +72,9 @@ public class Kirby extends JPanel {
 
         if (isNewImageDisplayed) {
             // 텀 후 새 이미지를 표시 (ChefKirby와 star 이미지를 함께 표시)
-            g.drawImage(ChefKirby, 300, 180, 170, 170, this); // ChefKirby 위치와 크기
-            g.drawImage(star, 444, 150, 100, 100, this); // ChefKirby 옆에 별 이미지 표시
-            g.drawImage(star2, 260, 270, 100, 100, this); // ChefKirby 옆에 별2 이미지 표시
+            g.drawImage(GhostKir, 320, 180, 180, 180, this); // GhostKir 위치와 크기
+            g.drawImage(star, 444, 150, 100, 100, this); // GhostKir 옆에 별 이미지 표시
+            g.drawImage(star2, 260, 270, 100, 100, this); // GhostKir 옆에 별2 이미지 표시
         } else if (isKirbyFullyGrown) {
             // 커비가 다 커졌을 때는 기존 캐릭터와 커비 이미지를 유지
             g.drawImage(characterImage, 300, 180, 200, 200, this);

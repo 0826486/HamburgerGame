@@ -67,10 +67,10 @@ class eximg extends JFrame {
 
 class GameStart extends JPanel implements KeyListener {
     private Image backgroundImage;
-    private Image chefKirbyImage;
+    private Image GhostKirImage;
     private Image[] hamImages = new Image[8];
-    private int chefKirbyX = 300;
-    private int chefKirbyY = 300;
+    private int GhostKirX = 400;
+    private int GhostKirY = 400;
 
     private int[] hamX = new int[8];
     private int[] hamY = new int[8];
@@ -81,7 +81,7 @@ class GameStart extends JPanel implements KeyListener {
 
     public GameStart() {
         backgroundImage = new ImageIcon("image/startbackground.jpg").getImage();
-        chefKirbyImage = new ImageIcon("image/kirbychef.png").getImage();
+        GhostKirImage = new ImageIcon("image/GhostKir.png").getImage();
 
         miniStackPanel = new MiniStackPanel();
         JFrame miniFrame = new JFrame("Mini Stack");
@@ -127,7 +127,7 @@ class GameStart extends JPanel implements KeyListener {
         for (int i = 0; i < hamImages.length; i++) {
             hamY[i] += hamSpeed[i];
 
-            if (hamY[i] + 20 >= chefKirbyY && hamX[i] + 20 >= chefKirbyX && hamX[i] <= chefKirbyX + 155) {
+            if (hamY[i] + 20 >= GhostKirY && hamX[i] + 20 >= GhostKirX && hamX[i] <= GhostKirX + 155) {
                 miniStackPanel.addIngredient(hamImages[i]);
                 hamY[i] = -50;
                 hamSpeed[i] = 2 + random.nextInt(2);  // 재료가 떨어지는 속도를 계속 줄여줍니다
@@ -158,7 +158,7 @@ class GameStart extends JPanel implements KeyListener {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
-        g.drawImage(chefKirbyImage, chefKirbyX, chefKirbyY, 175, 170, this);
+        g.drawImage(GhostKirImage, GhostKirX, GhostKirY, 175, 170, this);
 
         for (int i = 0; i < hamImages.length; i++) {
             g.drawImage(hamImages[i], hamX[i], hamY[i], 50, 50, this);
@@ -168,10 +168,10 @@ class GameStart extends JPanel implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         int keyCode = e.getKeyCode();
-        if (keyCode == KeyEvent.VK_LEFT && chefKirbyX > 0) {
-            chefKirbyX -= 10;
-        } else if (keyCode == KeyEvent.VK_RIGHT && chefKirbyX < getWidth() - 175) {
-            chefKirbyX += 10;
+        if (keyCode == KeyEvent.VK_LEFT && GhostKirX > 0) {
+        	GhostKirX -= 10;
+        } else if (keyCode == KeyEvent.VK_RIGHT && GhostKirX < getWidth() - 175) {
+        	GhostKirX += 10;
         }
         repaint();
     }
