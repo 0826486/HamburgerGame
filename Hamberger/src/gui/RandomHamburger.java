@@ -15,6 +15,7 @@ public class RandomHamburger {
 
             // 타이머를 설정하여 일정 시간이 지난 후 게임을 시작하도록 설정
             Timer timer = new Timer(2000, e -> {
+                exampleImage.setVisible(false); // eximg 창 숨기기
                 startGame();  // 게임을 시작
             });
             timer.setRepeats(false);
@@ -78,6 +79,7 @@ class GameStart extends JPanel implements KeyListener {
     private Random random = new Random();
 
     private MiniStackPanel miniStackPanel;
+    private boolean gameOver = false; // 게임 종료 여부
 
     public GameStart() {
         backgroundImage = new ImageIcon("image/startbackground.jpg").getImage();
@@ -116,8 +118,10 @@ class GameStart extends JPanel implements KeyListener {
         Timer timer = new Timer(40, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                updateHamPosition();
-                repaint();
+                if (!gameOver) {
+                    updateHamPosition();
+                    repaint();
+                }
             }
         });
         timer.start();
@@ -127,6 +131,7 @@ class GameStart extends JPanel implements KeyListener {
         for (int i = 0; i < hamImages.length; i++) {
             hamY[i] += hamSpeed[i];
 
+            // 버거와 GhostKir 충돌 체크
             if (hamY[i] + 20 >= GhostKirY && hamX[i] + 20 >= GhostKirX && hamX[i] <= GhostKirX + 155) {
                 miniStackPanel.addIngredient(hamImages[i]);
                 hamY[i] = -50;
@@ -135,7 +140,7 @@ class GameStart extends JPanel implements KeyListener {
 
             if (hamY[i] > getHeight()) {
                 hamY[i] = -50;
-                hamSpeed[i] = 2 + random.nextInt(2);  // 재료가 떨어지는 속도를 계속 줄여줍니다
+                hamSpeed[i] = 2 + random.nextInt(2);
 
                 int x;
                 boolean overlap;
@@ -163,15 +168,21 @@ class GameStart extends JPanel implements KeyListener {
         for (int i = 0; i < hamImages.length; i++) {
             g.drawImage(hamImages[i], hamX[i], hamY[i], 50, 50, this);
         }
+
+        if (gameOver) {
+            g.setColor(Color.RED);
+            g.setFont(new Font("Arial", Font.BOLD, 30));
+            g.drawString("Game Over!", getWidth() / 2 - 100, getHeight() / 2);
+        }
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
         int keyCode = e.getKeyCode();
         if (keyCode == KeyEvent.VK_LEFT && GhostKirX > 0) {
-        	GhostKirX -= 10;
+            GhostKirX -= 10;
         } else if (keyCode == KeyEvent.VK_RIGHT && GhostKirX < getWidth() - 175) {
-        	GhostKirX += 10;
+            GhostKirX += 10;
         }
         repaint();
     }

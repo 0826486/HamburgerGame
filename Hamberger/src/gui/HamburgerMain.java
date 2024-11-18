@@ -1,11 +1,7 @@
 package gui;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import java.awt.Image;
-import java.awt.Graphics;
+import javax.swing.*;
+import java.awt.*;
 
 public class HamburgerMain {
     public static void main(String[] args) {
@@ -13,7 +9,7 @@ public class HamburgerMain {
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(900, 600);
-        
+
         // 배경 패널 생성
         BackgroundPanel backgroundPanel = new BackgroundPanel();
         frame.add(backgroundPanel);
@@ -24,26 +20,32 @@ public class HamburgerMain {
         // 버튼 생성
         JButton button = new JButton(buttonIcon);
         button.setBounds(390, 430, buttonIcon.getIconWidth(), buttonIcon.getIconHeight()); // 버튼의 위치와 크기를 이미지 크기로 설정
-        
+
         // 버튼의 배경과 테두리 제거
         button.setContentAreaFilled(false); // 버튼의 내용 영역 배경을 투명하게 설정
         button.setBorderPainted(false);     // 버튼 테두리 제거
         button.setFocusPainted(false);      // 버튼 클릭 시 포커스 효과 제거
-        
+
         backgroundPanel.setLayout(null);    // 레이아웃을 null로 설정해 절대 위치 사용
         backgroundPanel.add(button);        // 배경 패널에 버튼 추가
 
         // 버튼 클릭 이벤트 처리
         button.addActionListener(e -> {
-            // 현재 창 닫기
-            frame.dispose();
-            
-            // Kirby 클래스를 새 창에 띄우기
-            JFrame kirbyFrame = new JFrame();
-            kirbyFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            kirbyFrame.setSize(900, 600);
-            kirbyFrame.add(new Kirby()); // Kirby 패널 추가
-            kirbyFrame.setVisible(true);
+            // GhostKir로 변환 처리 (예: 캐릭터 상태 변경)
+            System.out.println("GhostKir 상태로 변환 중...");
+
+            // 랜덤 미니 창 표시를 4초(4000ms) 후에 실행
+            Timer timer = new Timer(5000, event -> {
+                new eximg().setVisible(true); // 랜덤 미니 창 표시
+            });
+            timer.setRepeats(false); // 한 번만 실행
+            timer.start();
+
+            // Kirby 화면으로 전환
+            frame.getContentPane().removeAll(); // 기존 컨텐츠 제거
+            frame.add(new Kirby());             // Kirby 화면 추가
+            frame.revalidate();                 // 변경 사항 적용
+            frame.repaint();                    // 화면 다시 그리기
         });
 
         // 창을 보이게 설정
@@ -67,7 +69,7 @@ class BackgroundPanel extends JPanel {
         super.paintComponent(g);
         // 배경 이미지
         g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
-        
+
         // 추가 이미지
         g.drawImage(additionalImage, 640, 17, 150, 150, this); // 추가 이미지 위치와 크기
     }
