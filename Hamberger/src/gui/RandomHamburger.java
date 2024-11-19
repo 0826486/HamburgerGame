@@ -80,6 +80,8 @@ class GameStart extends JPanel implements KeyListener {
     private Timer gameTimer;
     private boolean isGameOver = false; // 게임 종료 여부 체크
     private Timer gameOverTimer; // 게임 오버 타이머
+    
+    private eximg exampleImage;
 
     public GameStart() {
         backgroundImage = new ImageIcon("image/startbackground.jpg").getImage();
@@ -119,14 +121,14 @@ class GameStart extends JPanel implements KeyListener {
         // 타이머로 게임 상태를 업데이트
         gameTimer = new Timer(40, e -> {
             if (!isGameOver) {
-                updateHamPosition();
+                updateHamPosition(miniFrame);
                 repaint();
             }
         });
         gameTimer.start();
     }
 
-    private void updateHamPosition() {
+    private void updateHamPosition(JFrame miniFrame) {
         for (int i = 0; i < hamImages.length; i++) {
             hamY[i] += hamSpeed[i];
 
@@ -136,7 +138,7 @@ class GameStart extends JPanel implements KeyListener {
                 // 윗빵이 올라갔을 때 gameover.png를 표시
                 if (hamImages[i] == new ImageIcon("image/hamImg1.png").getImage()) {
                     isGameOver = true; // 게임 종료
-                    startGameOverTimer(); // 게임 오버 타이머 시작
+                    startGameOverTimer(miniFrame); // 게임 오버 타이머 시작
                     return;
                 }
 
@@ -166,12 +168,14 @@ class GameStart extends JPanel implements KeyListener {
     }
 
     // 게임 오버 타이머 설정
-    private void startGameOverTimer() {
+    private void startGameOverTimer(JFrame miniFrame) {
         gameOverTimer = new Timer(2000, e -> {
             // 2초 후 게임 오버 화면 표시
 //            repaint();
             // 2초 후 게임 오버 화면 표시
             GameOver.showGameOver(miniStackPanel.getIngredients());
+            miniFrame.dispose();
+//            eximg.closeWindow();
         });
         gameOverTimer.setRepeats(false);
         gameOverTimer.start();
@@ -210,6 +214,7 @@ class GameStart extends JPanel implements KeyListener {
 
     @Override
     public void keyTyped(KeyEvent e) {}
+
 }
 
 class MiniStackPanel extends JPanel {

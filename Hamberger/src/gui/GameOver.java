@@ -5,6 +5,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import gui.RandomHamburger;
 
 public class GameOver extends JPanel {
     private Image backgroundImage;
@@ -14,7 +15,6 @@ public class GameOver extends JPanel {
     public GameOver(List<Image> stackedBurger) {
         // 전달받은 리스트를 복사한 뒤, 원래 순서를 뒤집음
         this.stackedBurger = new ArrayList<>(stackedBurger);
-//        Collections.reverse(this.stackedBurger);
 
         // 배경 및 박스 이미지 로드
         backgroundImage = new ImageIcon("image/startbackground.jpg").getImage(); // 배경 이미지 설정
@@ -30,14 +30,14 @@ public class GameOver extends JPanel {
 
         // 게임 오버 박스 그리기
         int boxX = (getWidth() - 500) / 2;
-        int boxY = (getHeight() - 400) / 2;
+        int boxY = (getHeight() - 300) / 2;
         int boxWidth = 400;
         int boxHeight = 200;
         g.drawImage(gameOverBoxImage, boxX, boxY, boxWidth, boxHeight, this);
 
         // 햄버거 거꾸로 그리기
         if (stackedBurger != null && !stackedBurger.isEmpty()) {
-            int burgerX = boxX + 150; // 햄버거 시작 위치 (박스 내 중심)
+            int burgerX = boxX + 200; // 햄버거 시작 위치 (박스 내 중심)
             int burgerY = boxY + 300; // 햄버거는 박스의 상단부터 아래로 거꾸로 쌓기
 
             for (Image burger : stackedBurger) {
