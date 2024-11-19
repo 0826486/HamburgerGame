@@ -5,7 +5,7 @@ import java.awt.*;
 
 public class HamburgerMain {
     public static void main(String[] args) {
-        // JFrame 생성
+        // JFrame 생성 ( 메인 게임 시작 화면 )ㄴ
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(900, 600);
@@ -29,28 +29,31 @@ public class HamburgerMain {
         backgroundPanel.setLayout(null);    // 레이아웃을 null로 설정해 절대 위치 사용
         backgroundPanel.add(button);        // 배경 패널에 버튼 추가
 
-        // 버튼 클릭 이벤트 처리
+        // 버튼 클릭 시 실행 할 코드 정의
         button.addActionListener(e -> {
-            // 랜덤 미니 창 표시를 4초(4000ms) 후에 실행
+            // 랜덤 미니 창 표시를 5초(5000ms) 후에 실행
+        	// Time Timer : 버튼 클릭 후 5초 뒤에 화면 전환
             Timer timer = new Timer(5000, event -> {
                 new eximg().setVisible(true); // 랜덤 미니 창 표시
             });
-            timer.setRepeats(false); // 한 번만 실행
+            timer.setRepeats(false); // 타이머가 한 번만 실행
             timer.start();
 
             // Kirby 화면으로 전환
-            frame.getContentPane().removeAll(); // 기존 컨텐츠 제거
-            frame.add(new Kirby());             // Kirby 화면 추가
+            frame.getContentPane().removeAll(); // 기존 화면 제거
+            frame.add(new Kirby());             // Kirby.java 화면 추가
             frame.revalidate();                 // 변경 사항 적용
             frame.repaint();                    // 화면 다시 그리기
+            // UI를 새로고침하여 변경 사항을 적용
         });
 
-        // 창을 보이게 설정
+        // 화면을 보이게 설정
         frame.setVisible(true);
     }
 }
 
 // 배경 패널 클래스
+// Swing 패널을 확장하여 커스텀 배경을 설정
 class BackgroundPanel extends JPanel {
     private Image backgroundImage;
     private Image additionalImage; // 추가 이미지 필드
@@ -64,10 +67,10 @@ class BackgroundPanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        // 배경 이미지
+        // 배경 이미지를 창 크기에 맞춰서 그림
         g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
 
-        // 추가 이미지
+        // 추가 이미지를 지정된 위치에서 보여지게 만들음
         g.drawImage(additionalImage, 640, 17, 150, 150, this); // 추가 이미지 위치와 크기
     }
 }
