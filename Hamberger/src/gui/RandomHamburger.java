@@ -132,7 +132,7 @@ class GameStart extends JPanel implements KeyListener {
         for (int i = 0; i < hamImages.length; i++) {
             hamY[i] += hamSpeed[i];
 
-            if (hamY[i] + 20 >= GhostKirY && hamX[i] + 20 >= GhostKirX && hamX[i] <= GhostKirX + 155) {
+            if (hamY[i] >= GhostKirY && hamX[i]  >= GhostKirX && hamX[i] <= GhostKirX + 150 && hamY[i] <= GhostKirY+120) {
                 miniStackPanel.addIngredient(hamImages[i]);
 
                 // 윗빵이 올라갔을 때 gameover.png를 표시
