@@ -31,9 +31,6 @@ public class HamburgerMain {
 
         // 버튼 클릭 이벤트 처리
         button.addActionListener(e -> {
-            // GhostKir로 변환 처리 (예: 캐릭터 상태 변경)
-            System.out.println("GhostKir 상태로 변환 중...");
-
             // 랜덤 미니 창 표시를 4초(4000ms) 후에 실행
             Timer timer = new Timer(5000, event -> {
                 new eximg().setVisible(true); // 랜덤 미니 창 표시

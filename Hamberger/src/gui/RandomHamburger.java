@@ -79,6 +79,7 @@ class GameStart extends JPanel implements KeyListener {
     private MiniStackPanel miniStackPanel;
     private Timer gameTimer;
     private boolean isGameOver = false; // 게임 종료 여부 체크
+    private Timer gameOverTimer; // 게임 오버 타이머
 
     public GameStart() {
         backgroundImage = new ImageIcon("image/startbackground.jpg").getImage();
@@ -135,7 +136,7 @@ class GameStart extends JPanel implements KeyListener {
                 // 윗빵이 올라갔을 때 gameover.png를 표시
                 if (hamImages[i] == new ImageIcon("image/hamImg1.png").getImage()) {
                     isGameOver = true; // 게임 종료
-                    repaint();
+                    startGameOverTimer(); // 게임 오버 타이머 시작
                     return;
                 }
 
@@ -164,6 +165,18 @@ class GameStart extends JPanel implements KeyListener {
         }
     }
 
+    // 게임 오버 타이머 설정
+    private void startGameOverTimer() {
+        gameOverTimer = new Timer(2000, e -> {
+            // 2초 후 게임 오버 화면 표시
+//            repaint();
+            // 2초 후 게임 오버 화면 표시
+            GameOver.showGameOver(miniStackPanel.getIngredients());
+        });
+        gameOverTimer.setRepeats(false);
+        gameOverTimer.start();
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -173,6 +186,7 @@ class GameStart extends JPanel implements KeyListener {
         if (isGameOver) {
             // Y 좌표를 기존보다 50만큼 위로 올림
             g.drawImage(gameOverImage, getWidth() / 2 - 150, getHeight() / 2 - 150, 300, 200, this);
+
         } else {
             for (int i = 0; i < hamImages.length; i++) {
                 g.drawImage(hamImages[i], hamX[i], hamY[i], 50, 50, this);
@@ -219,5 +233,8 @@ class MiniStackPanel extends JPanel {
             g.drawImage(ingredient, 50, y, 100, 50, this);
             y -= 50;
         }
+    }
+    public java.util.List<Image> getIngredients() {
+        return new ArrayList<>(ingredients); // 원본 리스트를 보호하기 위해 복사본 반환
     }
 }
