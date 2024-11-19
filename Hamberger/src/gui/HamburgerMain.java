@@ -1,6 +1,10 @@
 package gui;
 
 import javax.swing.*;
+
+// Jframe의 역할 : 햄버거 게임의 메인 윈도우 역할
+// 전체 UI 컨테이너를 구성하고 배경 이미지, 버튼, 화면 전환을 도와줌
+
 import java.awt.*;
 
 public class HamburgerMain {
